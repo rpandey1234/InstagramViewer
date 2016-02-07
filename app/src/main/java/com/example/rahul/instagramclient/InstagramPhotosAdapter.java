@@ -19,6 +19,8 @@ import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -77,9 +79,12 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
             commentTv.setText(Html.fromHtml(commentFormat));
             holder.comments.addView(commentView);
         }
-//        if (numCommentsTotal > numCommentsShown) {
-//
-//        }
+        if (numCommentsTotal > numCommentsShown) {
+            int numRemaining = numCommentsTotal - numCommentsShown;
+            holder.remainingComments.setVisibility(View.VISIBLE);
+            holder.remainingComments.setText(resources.getString(R.string.remaining_comments,
+                    numRemaining));
+        }
         if (photo.createdTime != null) {
             Long timestamp = Long.valueOf(photo.createdTime);
             CharSequence relativeTimestamp = DateUtils.getRelativeTimeSpanString(timestamp * 1000);
@@ -102,6 +107,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         @Bind(R.id.tvUsername) TextView username;
         @Bind(R.id.ivProfile) RoundedImageView profilePic;
         @Bind(R.id.comments) LinearLayout comments;
+        @Bind(R.id.remainingComments) TextView remainingComments;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

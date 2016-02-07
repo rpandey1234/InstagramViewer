@@ -8,6 +8,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/comment"
         android:paddingBottom="@dimen/padding_small"
+        android:maxLines="3"
+        android:ellipsize="end"
         />
 
 </LinearLayout>

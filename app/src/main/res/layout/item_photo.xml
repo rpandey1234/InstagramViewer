@@ -94,9 +94,20 @@
         android:padding="@dimen/padding"
         android:layout_below="@+id/tvCaption"
         android:textSize="@dimen/mediumText"
-        android:paddingBottom="@dimen/padding_large"
         >
-
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/comments"
+        android:id="@+id/remainingComments"
+        android:paddingBottom="@dimen/padding_large"
+        android:visibility="invisible"
+        android:paddingStart="@dimen/padding"
+        android:paddingLeft="@dimen/padding"
+        android:paddingEnd="@dimen/padding"
+        android:paddingRight="@dimen/padding"
+        />
 
 </RelativeLayout>
