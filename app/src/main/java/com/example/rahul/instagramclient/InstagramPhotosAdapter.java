@@ -1,12 +1,15 @@
 package com.example.rahul.instagramclient;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -18,8 +21,6 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -69,6 +70,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         holder.tvCaption.setText(Html.fromHtml(formattedString));
         String likeString = resources.getString(R.string.likes, photo.likesCount);
         holder.tvLikes.setText(likeString);
+        holder.comments.removeAllViews();
+        holder.commentList = photo.comments;
         int numCommentsTotal = photo.comments.size();
         int numCommentsShown = Math.min(NUM_COMMENTS_SHOWN, numCommentsTotal);
         for (int i = 0; i < numCommentsShown; i++) {
@@ -82,8 +85,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         if (numCommentsTotal > numCommentsShown) {
             int numRemaining = numCommentsTotal - numCommentsShown;
             holder.remainingComments.setVisibility(View.VISIBLE);
-            holder.remainingComments.setText(resources.getString(R.string.remaining_comments,
-                    numRemaining));
+            holder.remainingComments.setText(resources.getString(R.string.remaining_comments));
         }
         if (photo.createdTime != null) {
             Long timestamp = Long.valueOf(photo.createdTime);
@@ -98,7 +100,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         return convertView;
     }
 
-
     static class ViewHolder {
         @Bind(R.id.tvCaption) TextView tvCaption;
         @Bind(R.id.ivPhoto) ImageView ivPhoto;
@@ -108,9 +109,34 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         @Bind(R.id.ivProfile) RoundedImageView profilePic;
         @Bind(R.id.comments) LinearLayout comments;
         @Bind(R.id.remainingComments) TextView remainingComments;
+        List<Comment> commentList;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
+            remainingComments.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            v.getContext());
+
+                    String comments = "";
+                    for (Comment comment : commentList) {
+                        comments += String.format("<b>%s</b> %s<br />", comment.username,
+                                comment.text);
+                    }
+                    alertDialogBuilder.setTitle("Comments");
+                    alertDialogBuilder
+                            .setMessage(Html.fromHtml(comments))
+                            .setCancelable(false)
+                            .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
+            });
         }
     }
 }
