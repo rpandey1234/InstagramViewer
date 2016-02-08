@@ -22,7 +22,7 @@ Completed user stories:
  * Apply the popular Butterknife annotation library to reduce view boilerplate. (1 point)
 
 Walkthrough of all user stories:
-![Video Walkthrough](instgram_walkthrough.gif)
+![Video Walkthrough](instagram_walkthrough.gif)
 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
